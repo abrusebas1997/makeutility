@@ -35,11 +35,28 @@ func main() {
     {110, 250},
     {160, 300},
     {110, 350},
-    {600, 300},
+    {60, 300},
+    {70, 230},
   }, "F")
+
+  // Calling the grid
+  drawGrid(pdf)
 
   err := pdf.OutputFileAndClose("p1.pdf")
   if err != nil {
     panic(err)
+  }
+}
+// making grid to help me find the positions
+func drawGrid(pdf *gofpdf.Fpdf) {
+  w, h := pdf.GetPageSize()
+  for x := 0.0; x < w; x = x + (w / 20.0) {
+    pdf.SetFont("courier", "", 12)
+    pdf.SetTextColor(80, 80, 80)
+    pdf.SetDrawColor(200, 200, 200)
+    pdf.Line(x, 0, x, h)
+    _, lineHt := pdf.GetFontSize()
+    pdf.Text(x, lineHt, fmt.Sprintf("%d", int(x)))
+
   }
 }
