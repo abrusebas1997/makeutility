@@ -3,7 +3,30 @@ package main
 import (
   "fmt"
   "github.com/jung-kurt/gofpdf"
+  "image/color"
 )
+
+
+type PDFOption func(*gofpdf.Fpdf)
+// returns PDFOption
+func FillColor(c color.RGBA) PDFOption {
+	return func(pdf *gofpdf.Fpdf) {
+		r, g, b := rgb(c)
+		pdf.SetFillColor(r, g, b)
+	}
+}
+
+// helper function
+// without this, we would need to do something like
+// 	pdf.SetFillColor(c.R, c.G, c.B)
+
+func rgb(c color.RGBA) (int, int, int) {
+	alpha := float64(c.A) / 255.0
+	alphaWhite := int(255 * (1.0 - alpha))
+	r := int(float64(c.R)*alpha) + alphaWhite
+	g := int(float64(c.G)*alpha) + alphaWhite
+	b := int(float64(c.B)*alpha) + alphaWhite
+	return r, g, b
 
 type PDF struct {
   fpdf *gofpdf.Fpdf
@@ -28,6 +51,7 @@ func (p *PDF) Text(text string) {
 
 // takes a slice  of gofpdf
 func (p *PDF) Polygon(pts []gofpdf.PointType, opts ...PDFOption) {
+
 	for _, opt := range opts {
 		opt(p.fpdf)
 	}
