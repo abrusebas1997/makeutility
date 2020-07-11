@@ -1,9 +1,8 @@
 package main
 
 import (
-  "github.com/jung-kurt/gofpdf"
   "fmt"
-
+  "github.com/jung-kurt/gofpdf"
 )
 
 func main() {
@@ -13,10 +12,32 @@ func main() {
   fmt.Printf("width=%v", "height=%v\n", w, h)
   pdf.AddPage()
 
-
-  pdf.SetFont("arial", "B", 38)
-  -, lineHt := pdf.GetFontSize()
+  pdf.MoveTo(0, 0)
+  pdf.SetFont("arial", "B", 30)
+  // to get exact fontsize
+  _, lineHt := pdf.GetFontSize()
+  pdf.SetTextColor(255, 0, 0)
   pdf.Text(0, lineHt, "Hello, world")
+  pdf.MoveTo(0, lineHt*2.0)
+
+
+  pdf.SetFont("times", "", 18)
+  pdf.SetTextColor(100, 100, 100)
+  _, lineHt = pdf.GetFontSize()
+  pdf.MultiCell(0, lineHt, "Foodonate would like to extend the highest appreciation, on behalf of every member of the team, to", gofpdf.BorderNone, gofpdf.AlignRight, false)
+
+  // Shapes
+  pdf.SetFillColor(0, 255, 0)
+  pdf.SetDrawColor(0, 0, 255)
+  pdf.Rect(10, 100, 100, 100, "FD")
+  pdf.SetFillColor(100, 200, 200)
+  pdf.Polygon([]gofpdf.PointType{
+    {110, 250},
+    {160, 300},
+    {110, 350},
+    {600, 300},
+  }, "F")
+
   err := pdf.OutputFileAndClose("p1.pdf")
   if err != nil {
     panic(err)
