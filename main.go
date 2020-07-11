@@ -59,26 +59,45 @@ func (p *PDF) Polygon(pts []gofpdf.PointType, opts ...PDFOption) {
 }
 
 func main() {
+
+  name := flag.String("name", "", "the name of the person who completed more than 40 hours of community service")
+  flag.Parse()
+
   pdf := gofpdf.New(gofpdf.OrientationLandscape, gofpdf.UnitPoint, gofpdf.PageSizeLetter, "")
   w, h := pdf.GetPageSize()
   // // we print the width and height to not get an error
   // fmt.Printf("width=%v", "height=%v\n", w, h)
   pdf.AddPage()
+  pdf := PDF{
+		fpdf: fpdf,
+	}
+
+  skyblue1 := color.RGBA{61,186,213}
+	skyblue2 := color.RGBA{41, 166, 193}
 
   // top banner
-  pdf.SetFillColor(61,186,213)
+  // pdf.SetFillColor(61,186,213)
   pdf.Polygon([]gofpdf.PointType{
     {0, 0},
     {0, h / 9.0},
-    {w, 0},
-    {w, 0},
-  }, "F")
-  pdf.SetFillColor(41, 166, 193)
+    {w - (w / 6.0), 0},
+  }, FillColor(skyblue2))
+  // pdf.SetFillColor(41, 166, 193)
   pdf.Polygon([]gofpdf.PointType{
-    {0, 0},
-    {w, 0},
-    {w, h / 9.0},
-  }, "F")
+		{w / 6.0, 0},
+		{w, 0},
+		{w, h / 9.0},
+	}, FillColor(skyblue1))
+	pdf.Polygon([]gofpdf.PointType{
+		{w, h},
+		{w, h - h/8.0},
+		{w / 6, h},
+	}, FillColor(skyblue2))
+	pdf.Polygon([]gofpdf.PointType{
+		{0, h},
+		{0, h - h/8.0},
+		{w - (w / 6), h},
+	}, FillColor(skyblue1))
   // pdf.MoveTo(0, 0)
   // pdf.SetFont("arial", "B", 30)
   // // to get exact fontsize
