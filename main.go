@@ -1,6 +1,10 @@
 package main
 
-import "github.com/jung-kurt/gofpdf"
+import (
+  "github.com/jung-kurt/gofpdf"
+  "fmt"
+
+)
 
 func main() {
   pdf := gofpdf.New(gofpdf.OrientationPortrait, gofpdf.UnitPoint, gofpdf.PageSizeLetter, "")
@@ -10,10 +14,9 @@ func main() {
   pdf.AddPage()
 
 
-
-  pdf.AddPage()
   pdf.SetFont("arial", "B", 38)
-  pdf.Cell(40, 10, "Hello, world")
+  -, lineHt := pdf.GetFontSize()
+  pdf.Text(0, lineHt, "Hello, world")
   err := pdf.OutputFileAndClose("p1.pdf")
   if err != nil {
     panic(err)
