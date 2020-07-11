@@ -9,9 +9,29 @@ type PDF struct {
   fpdf *gofpdf.Fpdf
   x, y float64
 }
+// WAYS TO MOVE
+// regular move
+func (p *PDF) Move(xDelta, yDelta float64) {
+	p.x, p.y = p.x+xDelta, p.y+yDelta
+	p.fpdf.MoveTo(p.x, p.y)
+}
 
-func(p * PDF) Move(xDelta, yDelta float64) {
-  p.x,
+// absolut move
+func (p *PDF) MoveAbs(x, y float64) {
+	p.x, p.y = x, y
+	p.fpdf.MoveTo(p.x, p.y)
+}
+
+func (p *PDF) Text(text string) {
+	p.fpdf.Text(p.x, p.y, text)
+}
+
+// takes a slice  of gofpdf
+func (p *PDF) Polygon(pts []gofpdf.PointType, opts ...PDFOption) {
+	for _, opt := range opts {
+		opt(p.fpdf)
+	}
+	p.fpdf.Polygon(pts, "F")
 }
 
 func main() {
