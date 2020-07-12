@@ -4,7 +4,9 @@ import (
   "fmt"
   "github.com/jung-kurt/gofpdf"
   "image/color"
-  "flag"
+  "bufio"
+  "os"
+  // "flag"
   "time"
 )
 
@@ -59,9 +61,12 @@ func (p *PDF) Polygon(pts []gofpdf.PointType, opts ...PDFOption) {
 }
 
 func main() {
+  nameReader := bufio.NewReader(os.Stdin)
+  fmt.Println("What's your name?")
+  name, _:= nameReader.ReadString('\n')
 
-  name := flag.String("name", "Sebastian", "the name of the person who completed more than 40 hours of community service")
-  flag.Parse()
+  // name := flag.String("name", "Sebastian", "the name of the person who completed more than 40 hours of community service")
+  // flag.Parse()
 
   fpdf := gofpdf.New(gofpdf.OrientationLandscape, gofpdf.UnitPoint, gofpdf.PageSizeLetter, "")
   w, h := fpdf.GetPageSize()
@@ -114,7 +119,7 @@ pdf.Move(0, lineHt*2.0)
 
 fpdf.SetFont("times", "B", 42)
 _, lineHt = fpdf.GetFontSize()
-fpdf.WriteAligned(0, lineHt, *name, gofpdf.AlignCenter)
+fpdf.WriteAligned(0, lineHt, name, gofpdf.AlignCenter)
 pdf.Move(0, lineHt*1.75)
 
 	fpdf.SetFont("arial", "", 22)
