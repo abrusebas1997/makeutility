@@ -4,8 +4,9 @@ import (
   "fmt"
   "github.com/jung-kurt/gofpdf"
   "image/color"
+  "flag"
+  "time"
 )
-
 
 type PDFOption func(*gofpdf.Fpdf)
 // returns PDFOption
@@ -19,7 +20,6 @@ func FillColor(c color.RGBA) PDFOption {
 // helper function
 // without this, we would need to do something like
 // 	pdf.SetFillColor(c.R, c.G, c.B)
-
 func rgb(c color.RGBA) (int, int, int) {
 	alpha := float64(c.A) / 255.0
 	alphaWhite := int(255 * (1.0 - alpha))
@@ -27,7 +27,7 @@ func rgb(c color.RGBA) (int, int, int) {
 	g := int(float64(c.G)*alpha) + alphaWhite
 	b := int(float64(c.B)*alpha) + alphaWhite
 	return r, g, b
-
+}
 type PDF struct {
   fpdf *gofpdf.Fpdf
   x, y float64
@@ -60,22 +60,22 @@ func (p *PDF) Polygon(pts []gofpdf.PointType, opts ...PDFOption) {
 
 func main() {
 
-  name := flag.String("name", "", "the name of the person who completed more than 40 hours of community service")
+  name := flag.String("name", "Sebastian", "the name of the person who completed more than 40 hours of community service")
   flag.Parse()
 
-  pdf := gofpdf.New(gofpdf.OrientationLandscape, gofpdf.UnitPoint, gofpdf.PageSizeLetter, "")
-  w, h := pdf.GetPageSize()
+  fpdf := gofpdf.New(gofpdf.OrientationLandscape, gofpdf.UnitPoint, gofpdf.PageSizeLetter, "")
+  w, h := fpdf.GetPageSize()
   // // we print the width and height to not get an error
   // fmt.Printf("width=%v", "height=%v\n", w, h)
-  pdf.AddPage()
+  fpdf.AddPage()
   pdf := PDF{
 		fpdf: fpdf,
 	}
 
-  skyblue1 := color.RGBA{61,186,213}
-	skyblue2 := color.RGBA{41, 166, 193}
+  skyblue1 := color.RGBA{61, 186 ,213, 250}
+	skyblue2 := color.RGBA{41, 166, 193, 220}
 
-  // top banner
+  // BANNERS
   // pdf.SetFillColor(61,186,213)
   pdf.Polygon([]gofpdf.PointType{
     {0, 0},
@@ -98,6 +98,63 @@ func main() {
 		{0, h - h/8.0},
 		{w - (w / 6), h},
 	}, FillColor(skyblue1))
+
+// FONTS
+fpdf.SetFont("times", "B", 50)
+fpdf.SetTextColor(50, 50, 50)
+pdf.MoveAbs(0, 100)
+_, lineHt := fpdf.GetFontSize()
+fpdf.WriteAligned(0, lineHt, "Certificate of Appreciation", gofpdf.AlignCenter)
+pdf.Move(0, lineHt*2.0)
+
+fpdf.SetFont("arial", "", 28)
+_, lineHt = fpdf.GetFontSize()
+fpdf.WriteAligned(0, lineHt, "This certificate is awarded to", gofpdf.AlignCenter)
+pdf.Move(0, lineHt*2.0)
+
+fpdf.SetFont("times", "B", 42)
+_, lineHt = fpdf.GetFontSize()
+fpdf.WriteAligned(0, lineHt, *name, gofpdf.AlignCenter)
+pdf.Move(0, lineHt*1.75)
+
+	fpdf.SetFont("arial", "", 22)
+	_, lineHt = fpdf.GetFontSize()
+	fpdf.WriteAligned(0, lineHt*1.5, "For extensive hours of volunteer service and going beyond the immediate duties to provide help to those who need the most help in our community.", gofpdf.AlignCenter)
+	pdf.Move(0, lineHt*4.5)
+
+	fpdf.ImageOptions("images/FOODONATE.png", w/2.0-60.0, pdf.y+30.0, 130.0, 0, false, gofpdf.ImageOptions{
+		ReadDpi: true,
+	}, 0, "")
+
+	pdf.Move(0, 65.0)
+	fpdf.SetFillColor(100, 100, 100)
+	fpdf.Rect(60.0, pdf.y, 240.0, 1.0, "F")
+	fpdf.Rect(490.0, pdf.y, 240.0, 1.0, "F")
+
+	fpdf.SetFont("arial", "", 12)
+	pdf.Move(0, lineHt/1.5)
+	fpdf.SetTextColor(100, 100, 100)
+	pdf.MoveAbs(60.0+105.0, pdf.y)
+	pdf.Text("Date")
+	pdf.MoveAbs(490.0+60.0, pdf.y)
+	pdf.Text("board of directors")
+	pdf.MoveAbs(60.0, pdf.y-lineHt/1.5)
+	fpdf.SetFont("times", "", 22)
+	_, lineHt = fpdf.GetFontSize()
+	pdf.Move(0, -lineHt)
+	fpdf.SetTextColor(50, 50, 50)
+	yr, mo, day := time.Now().Date()
+	dateStr := fmt.Sprintf("%d/%d/%d", mo, day, yr)
+	fpdf.CellFormat(240.0, lineHt, dateStr, gofpdf.BorderNone, gofpdf.LineBreakNone, gofpdf.AlignCenter, false, 0, "")
+	pdf.MoveAbs(490.0, pdf.y)
+	sig, err := gofpdf.SVGBasicFileParse("images/sig.svg")
+	if err != nil {
+		panic(err)
+	}
+	pdf.Move(0, -(sig.Ht*.45 - lineHt))
+	fpdf.SVGBasicWrite(&sig, 0.5)
+
+
   // pdf.MoveTo(0, 0)
   // pdf.SetFont("arial", "B", 30)
   // // to get exact fontsize
@@ -132,7 +189,7 @@ func main() {
 
   // // Calling the grid
   // // drawGrid(pdf)
-  err := pdf.OutputFileAndClose("cert.pdf")
+  err = fpdf.OutputFileAndClose("cert.pdf")
   if err != nil {
     panic(err)
   }
