@@ -24,8 +24,8 @@ $ go get github.com/jung-kurt/gofpdf
 ```
 $ go run main.go && open cert.pdf
 ```
-![alt text](https://github.com/abrusebas1997/makeutility/blob/master/images/Screen%20Shot%202020-07-12%20at%2010.25.21%20PM.png)
-4. ![alt text](https://github.com/abrusebas1997/makeutility/blob/master/images/certificate%20(2).jpg)
+4. It will ask you for the name of the volunteer and there you go!
+![alt text](https://github.com/abrusebas1997/makeutility/blob/master/images/certificate%20(2).jpg)
 ## Built With
 
 * [Golang](https://golang.org/) - Language 
@@ -35,6 +35,7 @@ This project uses the following packages:
 
 * [gopdf](https://github.com/jung-kurt/gofpdf) - to open a pdf file 
 * [time](https://golang.org/pkg/time/) - to get exact time when it was generated 
+* [sign svg] (https://willowsystems.github.io/jSignature/#/demo/) - To create sign on svg, easier way to use it in golang
 
 ## Authors
 
