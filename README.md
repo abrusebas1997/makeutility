@@ -3,7 +3,7 @@ Community service Certificate generator
 
 ## Description
 I decided to make a certificate of community service generator because some 
-friends from Make School and me are starting a non-profit called [Foodonate](https://www.foodonate.org/)
+friends from Make School and me are starting a non-profit called [Foodonate](https://www.foodonate.org/).
 I thought making a certificate generator would be very helpful for our mission and 
 would make the process to create them, way easier. 
 
