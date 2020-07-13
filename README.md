@@ -35,7 +35,7 @@ This project uses the following packages:
 
 * [gopdf](https://github.com/jung-kurt/gofpdf) - to open a pdf file 
 * [time](https://golang.org/pkg/time/) - to get exact time when it was generated 
-* [sign svg] (https://willowsystems.github.io/jSignature/#/demo/) - To create sign on svg, easier way to use it in golang
+* [sign-svg] (https://willowsystems.github.io/jSignature/#/demo/) - To create sign on svg, easier way to use it in golang
 
 ## Authors
 
