@@ -1,5 +1,6 @@
 package main
 
+// packages
 import (
   "fmt"
   "github.com/jung-kurt/gofpdf"
@@ -10,6 +11,7 @@ import (
   "time"
 )
 
+//
 type PDFOption func(*gofpdf.Fpdf)
 // returns PDFOption
 func FillColor(c color.RGBA) PDFOption {
@@ -30,6 +32,7 @@ func rgb(c color.RGBA) (int, int, int) {
 	b := int(float64(c.B)*alpha) + alphaWhite
 	return r, g, b
 }
+// struct
 type PDF struct {
   fpdf *gofpdf.Fpdf
   x, y float64
@@ -65,6 +68,9 @@ func main() {
   fmt.Println("What's your name?")
   name, _:= nameReader.ReadString('\n')
 
+  textReader := bufio.NewReader(os.Stdin)
+  fmt.Println("Why is this person receiving a certificate?")
+  text, _:= textReader.ReadString('\n')
   // name := flag.String("name", "Sebastian", "the name of the person who completed more than 40 hours of community service")
   // flag.Parse()
 
@@ -105,26 +111,27 @@ func main() {
 	}, FillColor(skyblue1))
 
 // FONTS
-fpdf.SetFont("times", "B", 50)
-fpdf.SetTextColor(50, 50, 50)
-pdf.MoveAbs(0, 100)
-_, lineHt := fpdf.GetFontSize()
-fpdf.WriteAligned(0, lineHt, "Certificate of Appreciation", gofpdf.AlignCenter)
-pdf.Move(0, lineHt*2.0)
+  fpdf.SetFont("times", "B", 50)
+  fpdf.SetTextColor(50, 50, 50)
+  pdf.MoveAbs(0, 100)
+  _, lineHt := fpdf.GetFontSize()
+  fpdf.WriteAligned(0, lineHt, "Certificate of Appreciation", gofpdf.AlignCenter)
+  pdf.Move(0, lineHt*2.0)
 
-fpdf.SetFont("arial", "", 28)
-_, lineHt = fpdf.GetFontSize()
-fpdf.WriteAligned(0, lineHt, "This certificate is awarded to", gofpdf.AlignCenter)
-pdf.Move(0, lineHt*2.0)
+  fpdf.SetFont("arial", "", 28)
+  _, lineHt = fpdf.GetFontSize()
+  fpdf.WriteAligned(0, lineHt, "This certificate is awarded to", gofpdf.AlignCenter)
+  pdf.Move(0, lineHt*2.0)
 
-fpdf.SetFont("times", "B", 42)
-_, lineHt = fpdf.GetFontSize()
-fpdf.WriteAligned(0, lineHt, name, gofpdf.AlignCenter)
-pdf.Move(0, lineHt*1.75)
+  fpdf.SetFont("times", "B", 42)
+  _, lineHt = fpdf.GetFontSize()
+  fpdf.WriteAligned(0, lineHt, name, gofpdf.AlignCenter)
+  pdf.Move(0, lineHt*1.75)
 
+  // text: "For extensive hours of volunteer service and going beyond the immediate duties to provide help to those who need the most help in our community."
 	fpdf.SetFont("arial", "", 22)
 	_, lineHt = fpdf.GetFontSize()
-	fpdf.WriteAligned(0, lineHt*1.5, "For extensive hours of volunteer service and going beyond the immediate duties to provide help to those who need the most help in our community.", gofpdf.AlignCenter)
+	fpdf.WriteAligned(0, lineHt*1.5, text, gofpdf.AlignCenter)
 	pdf.Move(0, lineHt*4.5)
 
 	fpdf.ImageOptions("images/FOODONATE.png", w/2.0-60.0, pdf.y+30.0, 130.0, 0, false, gofpdf.ImageOptions{
