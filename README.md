@@ -13,7 +13,7 @@ to help people living in homeless shelters to have a healthy and nutritious meal
 to complete a certain amount of hours before getting this certificate.
 
 ### Presentation
-You can access to the google slides for this project in [Foodonate](https://docs.google.com/presentation/d/1IGxQGcDkec0Gq_0mgR2SdhhFZNvT5ubAbfo7jKbk160/edit#slide=id.g8c3ad5d6ee_0_27)
+You can access to the google slides for this project in [here](https://docs.google.com/presentation/d/1IGxQGcDkec0Gq_0mgR2SdhhFZNvT5ubAbfo7jKbk160/edit#slide=id.g8c3ad5d6ee_0_27)
 ### Installing
 
 1. Project code can be viewed locally by cloning
